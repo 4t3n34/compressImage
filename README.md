@@ -14,7 +14,7 @@ El funcionamiento es sencillo. Basta con pasarle por parametros el archivo **.jp
 <code>./compressImage.sh imagen1.png imagen2.jpg</code>
 
 ### **Opciones**
-- ***-h|--help:*** Muestra el panel de ayuda de la app
+- ***-h|--help:*** Muestra el panel de ayuda del script
 - ***-v|--verbose:*** Muestra el trabajo en curso
 - ***-o|output:*** Directorio donde se guardaran las imagenes comprimidas. Sino existe la herramienta lo va a crear
 - ***-s|--sufix:*** Sufijo que se le agregará al nombre del archivo comprimido. Por defecto es ***_compres***

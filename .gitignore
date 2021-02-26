@@ -3,6 +3,5 @@ compress/
 media/
 back/
 *.jpg
-*.png
 *.svg
 *.tar

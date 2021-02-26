@@ -82,7 +82,7 @@ downloadFile(){
     verboseMessage="Descargando el archivo $fileFullName"
     showVerbose
     tempName="$output/temp$fileFullName"
-    wget -O "$tempName" "$url/$fileFullName" 2>/dev/null;
+    curl -o "$tempName" "$url/$fileFullName" 2>/dev/null;
     #Validar si el archivo descargado no esta corrupto
     identify $tempName>/dev/null 2>&1
     if [ $? -eq 1 ];then

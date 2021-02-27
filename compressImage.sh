@@ -32,6 +32,7 @@ fileCompressName=""
 url=""
 cantImage=0
 cantImageCompress=0
+logHeader=""
 
 
 trap ctrl_c INT
@@ -64,9 +65,13 @@ showError(){
 }
 
 showVerbose(){
-    if [ $verbose -eq 1 ]; then
-        echo -e "$(date +"%d/%m/%Y %r"):$verboseMessage"
+    if [ $verbose -eq 0 ]; then
+        clear
+        echo -e "$logHeader"
+        echo -e "$(date +"%d/%m/%Y %r") Progreso:${greenColour}($cantImageCompress/$cantImage) imagenes${endColour}"
     fi
+    echo -e "$(date +"%d/%m/%Y %r"):$verboseMessage"
+    
 }
 
 validatePathOutput(){
@@ -96,7 +101,7 @@ downloadFile(){
 }
 
 compressFile(){
-    verboseMessage="Comprimiendo el archivo $fileFullName ($cantImageCompress/$cantImage)"
+    verboseMessage="Comprimiendo el archivo $fileFullName"
     showVerbose
     response=$(curl -X POST "https://tinypng.com/web/shrink" -H "Content-Type: image/jpeg" -H "user-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36" --data-binary @$filePath 2>/dev/null)
     if [[ $response == *"url"* ]];then
@@ -135,8 +140,8 @@ cantImage=$#
 count=0
 if [ $# -gt 0 ]
 then
-    echo -e "$(date +"%d/%m/%Y %r"):${greenColour}[!] Iniciando la compresión de imagenes${endColour}"
-    echo -e "$(date +"%d/%m/%Y %r"):${greenColour}[!] $cantImage imagenes a comprimir${endColour}"
+    logHeader=$(echo -e "$(date +"%d/%m/%Y %r"):${greenColour}[!] Iniciando la compresión de $cantImage imagenes\r${endColour}")
+    echo "$logHeader"
     for ARCHIVO in $*;
     do
          # Validar que el ARCHIVO exista
@@ -148,6 +153,9 @@ then
             fileName=$(basename -s .$fileExt $fileFullName)
             fileCompressName="$fileName$suffix.$fileExt"
             let cantImageCompress+=1
+            if [ $verbose -eq 1 ];then
+                echo -e "$(date +"%d/%m/%Y %r") Progreso:${greenColour}($cantImageCompress/$cantImage) imagenes${endColour}"
+            fi  
             compressFile
             sleep 1
         else
